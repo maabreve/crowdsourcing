@@ -1,6 +1,7 @@
 import passport from "passport";
 const router = require("express").Router();
 import dotenv from 'dotenv';
+import User from "../models/User";
 dotenv.config();
 
 const { LOGIN_REDIRECT } = process.env;
@@ -21,13 +22,18 @@ router.get(
 );
 
 router.get("/login/success", (req: any, res: any) => {
-  console.log('User', req.user)
   if (req.user) {
+    const user: User = {
+      fullName: req.user.fullName,
+      email: req.user.email,
+      picture: req.user.picture,
+      googleId: req.user.googleId,
+    }
+
     res.status(200).json({
       success: true,
       message: "successfull",
-      user: req.user,
-      //   cookies: req.cookies
+      user,
     });
   }
 });
